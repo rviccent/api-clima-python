@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Clima SJC</title>
+</head>
+<body>
+    <h1>Clima - São José dos Campos</h1>
+
+    <h2>Resumo</h2>
+    <p>Total de registros: {{ resumo.total_registros }}</p>
+    <p>Média temperatura: {{ resumo.media_temp }} ºC</p>
+    <p>Menor temperatura: {{ resumo.menor_temp }} ºC</p>
+    <p>Maior temperatura: {{ resumo.maior_temp }} ºC</p>
+
+    <h2>Últimos Registros</h2>
+    <table border="1">
+        <tr>
+            <th>Data</th>
+            <th>Temperatura</th>
+            <th>Vento</th>
+        </tr>
+        {% for item in ultimos %}
+        <tr>
+            <td>{{ item.data_coleta }}</td>
+            <td>{{ item.temperatura }} ºC</td>
+            <td>{{ item.vento_kmh }} km/h</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
