@@ -81,20 +81,6 @@ def coletar():
     row = coletar_e_salvar()
     return jsonify(row)
 
-    conn = get_conn()
-    try:
-        with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("""
-                INSERT INTO clima (cidade, temperatura, vento_kmh)
-                VALUES (%s, %s, %s)
-                RETURNING *
-            """, (info["cidade"], info["temperatura"], info["vento_kmh"]))
-            row = cur.fetchone()
-            conn.commit()
-            return jsonify(row)
-    finally:
-        conn.close()
-
 def coletar_e_salvar():
     info = fetch_clima_sjc()
 
