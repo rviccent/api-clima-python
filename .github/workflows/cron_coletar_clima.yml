@@ -1,0 +1,15 @@
+name: Cron - Coletar Clima
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"   # a cada 30 minutos (UTC)
+  workflow_dispatch: {}       # botão pra rodar manualmente
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar endpoint /clima/coletar
+        run: |
+          echo "Chamando endpoint..."
+          curl -sS "https://api-clima-python.onrender.com/clima/coletar"
