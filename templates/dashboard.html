@@ -3,30 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Clima SJC</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .card-custom {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .navbar-brand {
+            font-weight: 600;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Clima - São José dos Campos</h1>
 
-    <h2>Resumo</h2>
-    <p>Total de registros: {{ resumo.total_registros }}</p>
-    <p>Média temperatura: {{ resumo.media_temp }} ºC</p>
-    <p>Menor temperatura: {{ resumo.menor_temp }} ºC</p>
-    <p>Maior temperatura: {{ resumo.maior_temp }} ºC</p>
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">🌤️ API Clima - São José dos Campos</span>
+    </div>
+</nav>
 
-    <h2>Últimos Registros</h2>
-    <table border="1">
-        <tr>
-            <th>Data</th>
-            <th>Temperatura</th>
-            <th>Vento</th>
-        </tr>
-        {% for item in ultimos %}
-        <tr>
-            <td>{{ item.data_coleta }}</td>
-            <td>{{ item.temperatura }} ºC</td>
-            <td>{{ item.vento_kmh }} km/h</td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="container">
+
+    <!-- RESUMO -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+            <div class="card card-custom p-3 text-center">
+                <h6>Total de Registros</h6>
+                <h3 class="fw-bold text-primary">{{ resumo.total_registros }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card card-custom p-3 text-center">
+                <h6>Média Temperatura</h6>
+                <h3 class="fw-bold text-success">{{ resumo.media_temp }} °C</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card card-custom p-3 text-center">
+                <h6>Menor Temperatura</h6>
+                <h3 class="fw-bold text-info">{{ resumo.menor_temp }} °C</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card card-custom p-3 text-center">
+                <h6>Maior Temperatura</h6>
+                <h3 class="fw-bold text-danger">{{ resumo.maior_temp }} °C</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TABELA -->
+    <div class="card card-custom p-4">
+        <h5 class="mb-3">📊 Últimos Registros</h5>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Data</th>
+                        <th>Temperatura (°C)</th>
+                        <th>Vento (km/h)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in ultimos %}
+                    <tr>
+                        <td>{{ item.data_coleta }}</td>
+                        <td>{{ item.temperatura }}</td>
+                        <td>{{ item.vento_kmh }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
