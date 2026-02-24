@@ -8,30 +8,47 @@ load_dotenv()
 
 app = Flask(__name__)
 
-def init_db():
-    conn = get_conn()
-    try:
-        with conn.cursor() as cur:
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS clima (
-                    id SERIAL PRIMARY KEY,
-                    cidade VARCHAR(100) NOT NULL,
-                    temperatura NUMERIC(5,2) NOT NULL,
-                    vento_kmh NUMERIC(6,2),
-                    data_coleta TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                );
-            """)
-        conn.commit()
-    finally:
-        conn.close()
-
-
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_conn():
     # Produção (Render)
     if DATABASE_URL:
         return psycopg2.connect(DATABASE_URL)
+
+    def init_db():
+        conn = get_conn()
+        try:
+            with conn.cursor() as cur:
+                cur.execute("""
+                            CREATE TABLE IF NOT EXISTS clima
+                            (
+                                id
+                                SERIAL
+                                PRIMARY
+                                KEY,
+                                cidade
+                                VARCHAR
+                            (
+                                100
+                            ) NOT NULL,
+                                temperatura NUMERIC
+                            (
+                                5,
+                                2
+                            ) NOT NULL,
+                                vento_kmh NUMERIC
+                            (
+                                6,
+                                2
+                            ),
+                                data_coleta TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                                );
+                            """)
+            conn.commit()
+        finally:
+            conn.close()
+
+    init_db()
 
     # Local
     return psycopg2.connect(
@@ -41,9 +58,6 @@ def get_conn():
         user=os.getenv("DB_USER", "postgres"),
         password=os.getenv("DB_PASSWORD", "")
     )
-
-# chama automaticamente ao iniciar
-init_db()
 @app.get("/health")
 def health():
     return {"status": "ok"}
