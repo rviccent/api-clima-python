@@ -76,6 +76,25 @@ def fetch_clima_sjc():
 def health():
     return {"status": "ok"}
 
+@app.get("/clima/serie")
+def serie():
+    conn = get_conn()
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute("""
+                SELECT
+                    data_coleta,
+                    temperatura,
+                    vento_kmh
+                FROM clima
+                ORDER BY data_coleta DESC
+                LIMIT 50
+            """)
+            rows = cur.fetchall()
+            return jsonify(rows)
+        finally:
+            conn.close()
+
 @app.get("/clima/coletar")
 def coletar():
     row = coletar_e_salvar()

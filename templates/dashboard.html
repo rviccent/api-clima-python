@@ -66,6 +66,11 @@
 
     </div>
 
+    <div class="card card-custom p-4 mb-4">
+        <h5 class="mb-3">📈 Temperatura e Vento (últimas 50 coletas)</h5>
+        <canvas id="climaChart" height="90"></canvas>
+    </div>
+
     <!-- TABELA -->
     <div class="card card-custom p-4">
         <h5 class="mb-3">📊 Últimos Registros</h5>
@@ -94,6 +99,42 @@
     </div>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  async function carregarGrafico() {
+    const resp = await fetch("/clima/serie");
+    const dados = await resp.json();
+
+    const labels = dados.map(x => new Date(x.data_coleta).toLocaleString("pt-BR"));
+    const temp = dados.map(x => Number(x.temperatura));
+    const vento = dados.map(x => Number(x.vento_kmh));
+
+    const ctx = document.getElementById("climaChart");
+
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels,
+        datasets: [
+          { label: "Temperatura (°C)", data: temp, tension: 0.3 },
+          { label: "Vento (km/h)", data: vento, tension: 0.3 }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: "index", intersect: false },
+        plugins: { legend: { position: "top" } },
+        scales: {
+          x: { ticks: { maxTicksLimit: 8 } }
+        }
+      }
+    });
+  }
+
+  carregarGrafico();
+</script>
 
 </body>
 </html>
