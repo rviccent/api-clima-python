@@ -60,7 +60,7 @@
         <div class="muted">São José dos Campos • Coletas automáticas no PostgreSQL</div>
       </div>
       <div class="d-flex gap-2">
-        <a class="btn btn-primary" href="/clima/coletar">🔄 Coletar agora</a>
+      <button id="btnColetar" class="btn btn-primary" type="button">🔄 Coletar agora</button>
         <a class="btn btn-outline-secondary" href="/clima/resumo" target="_blank">📌 Resumo (JSON)</a>
       </div>
     </div>
@@ -210,5 +210,31 @@
 
     carregarGrafico();
   </script>
+
+<script>
+  const btn = document.getElementById("btnColetar");
+
+  btn.addEventListener("click", async () => {
+    try {
+      btn.disabled = true;
+      btn.textContent = "⏳ Coletando...";
+
+      const resp = await fetch("/clima/coletar");
+      if (!resp.ok) throw new Error("Falha ao coletar");
+
+      // opcional: ler o json só pra garantir que veio
+      await resp.json();
+
+      // recarrega o dashboard pra atualizar cards/tabela
+      window.location.reload();
+    } catch (e) {
+      alert("Erro ao coletar. Tenta de novo.");
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "🔄 Coletar agora";
+    }
+  });
+</script>
 </body>
 </html>
