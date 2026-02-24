@@ -92,7 +92,7 @@ def serie():
             """)
             rows = cur.fetchall()
             return jsonify(rows)
-        finally:
+    finally:
             conn.close()
 
 @app.get("/clima/coletar")
